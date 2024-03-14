@@ -17,15 +17,16 @@ class WebRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         
         if self.path == '/user':
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
 
             content_length = int(self.headers.get("Content-Length", 0))
 
             new_user: str = self.rfile.read(content_length).decode("utf-8")
 
             self.add_user(new_user)
+
+            self.send_response(201)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
 
             self.wfile.write(new_user.encode("utf-8"))
 
